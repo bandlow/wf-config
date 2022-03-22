@@ -17,28 +17,31 @@ import './style.css';
 const appDiv = document.getElementById('app');
 appDiv.innerHTML = `<h1>WF-Config Reader</h1>`;
 
-let configDocument = null;
 getConfiguration();
+var configDocument;
+console.log(getParamByStepId(10, "step_beschreibung"));
+
 
 function getConfiguration() {
  // fetch-Aufruf mit Pfad zur XML-Datei
-fetch ('./wf.xml')
-.then (function (response) {
+fetch ('https://raw.githubusercontent.com/bandlow/wf-config/master/wf.xml')
+.then (response => {
   // Antwort kommt als Text-String
   return response.text();
 })
-.then (function (data) {
+.then (data => {
+  
   console.log (data);			  // schnell mal in der Konsole checken
-  
   // String in ein XML-DOM-Objekt umwandeln
-  let parser = new DOMParser (),
-    xmlDoc = parser.parseFromString (data, 'text/xml');
-  
+  let parser = new DOMParser ();
+  configDocument = parser.parseFromString (data, 'application/xml');
+  return configDocument
+    
   //und noch ein paar Test-Ausgaben in die Konsole
-  console.log (xmlDoc.getElementsByTagName ('item'));
-  console.log ("item "  + xmlDoc.getElementsByTagName ('item')[1].children[0].textContent);
+  //console.log (this.configDocument.getElementsByTagName ('item'));
+  //console.log ("item "  + xmlDoc.getElementsByTagName ('item')[1].children[0].textContent);
 
-  comicToday (xmlDoc);			// Funktion zur Bearbeitung mit dem geparsten xmlDoc aufrufen	
+  //comicToday (xmlDoc);			// Funktion zur Bearbeitung mit dem geparsten xmlDoc aufrufen	
 }).catch (function (error) {
  console.log ("Fehler: bei Auslesen der XML-Datei " + error);
 });
