@@ -1,0 +1,344 @@
+<?xml version="1.0" encoding="utf-8"?>
+<workflow>
+
+	<!-- ############################################################################################### -->
+
+	<!-- Bitte NIEMALS den Wert eines "key" Attributs ändern, da diese Attribute im VBS-Code als Referenz und in dieser Vorlage teilweise als Cross-Referenz benutzt werden -->
+
+	<!-- ############################################################################################### -->
+
+
+	<!-- Pfadangaben auf ausgelagerte Script-Klassen, die zum Start eines Worflows in eine jederzeit verfügbare wfsmartPS Schattenvariable nachgeladen werden -->
+	<ClientScripte>
+	</ClientScripte>
+
+	<AllgemeinScripte>
+		<Object key="Fehlermeldungen" aktiv="true">D:\ENAIODATEN\etc\Scanqualitaet\Allgemein\DMS_Fehlermeldungen.vbs</Object> <!-- wird in wfsmartPS => Bauakte_VBS gespeichert -->
+	</AllgemeinScripte>
+	
+	<Programmpfade>
+		<Object key="SmartPDF_XView">\\uuzsrv7\enaio-clients\Zusatzkomponenten\smartPDF_View\smartPDF_XView.exe</Object>
+	</Programmpfade>
+
+	<!-- -->
+	<Plausiblitaetspruefung>
+		<Object key="FAELLIGKEITSDATUM_date" type="date">Faelligkeitsdatum</Object>
+	</Plausiblitaetspruefung>
+
+	<!-- -->
+	<FibuWerte>
+		<Object key="accounting_destination_folder">C:\Temp</Object>
+		<!-- Timer Stuff -->
+		<Object key="accounting_timer_supported">true</Object>
+		<Object key="accounting_timer_startactivity">A03278EE9DE0458F9FCC38C71C840024</Object>
+		<Object key="accounting_timer_endactivity">EE1848B158A140808DAD4252E65CCAA0</Object>
+	</FibuWerte>
+
+	<!-- Beschreibungswerte definieren über den internen Namen die Objektdefinitionen auf Schrank- Dokument- und Registerebene für Eingangsrechnungen, Bauakten, Geschäftspartner
+		Für ein Objekt ist das Attribut "key" der scriptinterne Bezeichner, der den Text jeweils als internen Enaio-Objekt Namen des beschriebenen Objekts erwartet.
+		Das Attribut "type" gibt die Type_ID des beschriebenen Objekts an.
+		Technisch abgefragt wie bspw.: KO.Beschreibungswerte("Eingangsrechnung_Archivename_intern") => "EINGANGSRECHNUNGEN" -->
+	<Beschreibungswerte>
+        <Object key="Posteingang_Archivename_intern" type="27">POSTEINGANG</Object> <!-- Angabe des internen Enaio-Objekt Schranknamen der "Eingangsrechnungen" sowie die entsprechende Type_ID -->
+		<Object key="Posteingang_Dokumentname_intern" type="262185">PE_DOKUMENT_document</Object> <!-- Angabe des internen Enaio-Objekt Dokumentnamen der Eingangsrechnungen "Eingangsrechnung" sowie die entsprechende Type_ID -->
+		<Object key="Posteingang_Umschlagname_intern" type="6488129">PE_UMSCHLAG_register</Object>
+
+		<Ojbect key="Protokoll">PROTOKOLL</Ojbect>
+	</Beschreibungswerte>
+
+	<!-- Sammlung von Klartexten für alle Listenelemente, welche über den jeweiligen Objekt "key" in den jeweils verwendenden Listen im "item" referenziert werden.
+		Hier sind sie im Text explizit definiert und werden in den referenzierenden Listen auf der WF-Maske angezeigt.
+		Technisch abgefragt wie bspw.: KO.Listenklartexte("Aktion_zur_Pruefung") => "Weiterleiten zur Rechnungsprüfung" -->
+	<Listenklartexte>
+		<Object key="Aktion_Sendung_verwerfen">Sendung verwerfen</Object>
+		<Object key="Aktion_Weiterleiten_Team">Ok und weiterleiten an Team</Object>
+		<Object key="Aktion_Weiterleiten_Sendungspruefung">Weiterleiten an Sendungsprüfung</Object>
+		<Object key="Aktion_Weiterleiten_Rechnungseingang">Weiterleiten an Rechnungseingang</Object>
+		<Object key="Aktion_Zurueck_Scanplatz">Zurück an Scan-Platz</Object>
+		<!-- <Object key="Aktion_Offen">Offen (Warten auf Scan bzw. PDF aus den Sonderfällen)</Object> -->
+
+
+		<Object key="Setzen_auf_1">Zurück an Kunde</Object>
+		<Object key="Setzen_auf_2">Im Tresor</Object>
+		<Object key="Setzen_auf_3">In Handakte</Object>
+		<Object key="Setzen_auf_4">Vernichtung</Object>
+
+		<Object key="Sachlich_1">ja</Object>
+		<Object key="Sachlich_2">nein</Object>
+		
+		<Object key="Dokstatus_1">Freigegeben (Dokument kann übertragen werden in Fallakte)</Object>
+		<Object key="Dokstatus_2">Rescan (Dokument muss nochmal gescannt werden)</Object>
+		<Object key="Dokstatus_3">Ausgesteuert (Dokument gehört nicht in die Akte)</Object>
+		<Object key="Dokstatus_4">Offen (Warten auf Scan bzw. PDF aus den Sonderfällen)</Object>
+		
+		
+	</Listenklartexte>
+
+	<!-- Sammlung von Klartexten für alle Meldungen mittels MsgBox, die in verschiedenen Situationen als Pflichtfeld-Hinweise, Fehlermeldungen, etc. benutzt werden.
+		Referenzierung des Meldungstextes über den jeweiligen Objekt "key".
+		Technisch abgefragt wie bspw.: KO.Meldungstexte("Pflichtfelder") => "Folgende Pflichtfeldbedingungen sind nicht erfüllt:" -->
+	<Meldungstexte>
+		<Object key="Pflichtfelder">Folgende Pflichtfeldbedingungen sind nicht erfüllt:</Object>
+		<Object key="Pflichtfeld">Folgende Pflichtfeldbedingung ist nicht erfüllt:</Object>
+		<Object key="Keine_Aktion_angegeben">Es wurde keine Aktion eingetragen</Object>
+		<Object key="Kein_Kommentar_eingegeben">Bitte tragen Sie noch eine Bemerkung ein.</Object>
+		<Object key="Kein_Bearbeiter_gewaehlt">Es ist kein Bearbeiter eingetragen.</Object>
+		<Object key="Bitte_Datum">Bitte ein Datum angeben!</Object>
+		<Object key="Bitte_Setzen_auf_angeben">Bitte ein Element aus der Liste wählen.</Object>
+
+		<Object key="Sendung_Loeschen">Soll die Sendung gelöscht werden?</Object>
+		<Object key="Geschaeftspartnernummer_ungueltig">Die eingegebene Geschäftspartner-Nummer ist leider ungültig.</Object>
+		<Object key="Antragsnummer_ungueltig">Die eingegebene Antrags-Nummer ist leider ungültig.</Object>
+		<Object key="Bitte_mehr_als_2_Stellen">Bitte geben Sie mind. 3 Stellen (Name oder Nummer) als Suchbegriff ein.</Object>
+
+
+		<Object key="Kein_Weiterleiten_da_Scan_unvollstaendig">Sie können noch nicht weiterleiten, da noch Dokumente nachzuverscannen sind!</Object>
+
+		<Object key="Verbleib_fuer_alle_Dokumente_Setzen">Bitte setzen Sie zu allen Dokumenten den Verbleib!</Object>
+
+		<Object key="Bitte_Team_Waehlen">Bitte wählen Sie ein Team!</Object>
+		
+
+		<Object key="Betreff_WF_doppelt">Abbruch des gestarteten Workflows</Object>
+		<Object key="Text_WF_doppelt">Es läuft noch ein Workflowprozess. Der Workflowstart wird abgebrochen.</Object>
+		<Object key="Keine_Begruendung_eingegeben">Bitte wählen Sie eine Begründung aus der Liste aus.</Object>
+
+		<Object key="Begruendung_fuer_Abbruch_fehlt">Bitte wählen Sie eine Begründung für den Abbruch aus der Liste "Begründung" aus.</Object>
+
+		<Object key="Mindestens_ein_Benutzer_waehlen">Für eine Rückfrage wählen Sie bitte mindestens einen Benutzer mit Geprüft ungleich "ja" aus.</Object>
+		
+		<Object key="Leerer_Wert">Mindestens das Feld Geschaeftspartner Nr oder Antragsnummer muss gefüllt sein.</Object>
+		
+		<Object key="Nichts_gewaehlt">Es ist weder eine GP-Nummer noch eine Antragsnummer ausgewählt.</Object>
+		
+		
+	</Meldungstexte>
+
+
+	<Fieldmappings>
+
+		<Fieldmapping name="Posteingang">
+			<Field internal_name="typ" wf_variable="WF_Typ"/>
+			<Field internal_name="team" wf_variable="WF_Team"/>
+			<Field internal_name="GPNR" wf_variable="WF_Geschaeftspartner_Nr"/>
+			<Field internal_name="ANTNR" wf_variable="WF_Antragsnummer"/>
+			<Field internal_name="Historie" wf_variable="WF_Bemerkungen_Historie"/>
+			<Field internal_name="Barcode" wf_variable="WF_Barcode_Sendung"/>
+			<Field internal_name="bfeld_sichtbar_fuer" wf_variable="WF_Sichtbar_fuer"/>
+
+			<TableField internal_name="PROTOKOLL" wf_variable="wfprotocol">
+				<Field internal_name="DATUM_date" wf_variable="Datum"/>
+				<Field internal_name="UHRZEIT" wf_variable="Uhrzeit"/>
+				<Field internal_name="BENUTZER" wf_variable="Benutzer"/>
+				<Field internal_name="INFO" wf_variable="Protokoll"/>
+			</TableField>
+		</Fieldmapping>
+		
+		<Fieldmapping name="Umschlag">
+			<Field internal_name="UMSCHLAGSBARCODE" wf_variable="WF_Barcode_Sendung"/>
+			<Field internal_name="ANZAHL_DOKUMENTE" wf_variable="WF_Anzahl_Dokumente"/>
+			<Field internal_name="SCAN_DATUM" wf_variable="WF_Eingangsdatum_date"/>
+			<Field internal_name="SCAN_USER" wf_variable="WF_Scan_User"/>
+			<!-- <Field internal_name="BATCH_ID" wf_variable=""/> -->			
+		</Fieldmapping>
+
+	</Fieldmappings>
+
+	<!-- Defintion der jeweils im Zeichenblatt definierten WF-Schritte (Aktivitäten) in Form von Steps mit einer id und einem Namen (entspricht den Namen im Zeichenblatt). -->
+	<Steps>
+
+		<Step name="Sendungserfassung" id="10"> <!-- Das Attribut "name" beinhaltet den Namen der Aktivität. Das Attribut "id" repräsentiert die Step_ID.
+			Mittels dieser Step_ID können alle Rubriken eines Steps identifiziert weden.
+			Für die Objekte eines Step gilt: Das Attribut "key" ist im Code der Bezeichner, mit dem der entsprechende Text ermittelt wird. -->
+			<Object key="step_beschreibung">Dokumentprüfung</Object> <!-- Beschreibung, die im Dokument "Eingangsrechnung" in der Tabelle "Protokoll" der entsprechenden Spalte "Protokoll" für den jeweiligen Workflow im Sinne eines historischen Verlaufs abgelegt wird. -->
+			<Object key="protokoll_in">Eingang</Object>
+			<Object key="status_in">Zur Erfassung</Object> <!-- Der in Enaio angezeigte Status im jeweiligen WF-Schritt. -->
+			<Object key="activity">Sendungserfassung</Object> <!-- Der in Enaio angezeigte Name der aktuellen Aktivität. -->
+			<Object key="bearbeiter_art">orgobject</Object> <!-- Bearbeiterarten in Function Set_zustaendige_Bearbeiter() und Set_Bearbeiter(): "orgobject", "tabobject", "listobject", "fieldobject" -->
+			<Object key="bearbeiter_art_Wert">Posteingang scannen</Object> <!-- -->
+			<Object key="maxdauer_days">30</Object> <!-- Anzahl in Tagen für die Fristberechnung -->
+            <Object key="activepage">0</Object> <!-- Die Angabe, welches Tabcontrol das zuerst dem Benutzer angezeigte und aktive ist. Es gibt insgesamt 3 Tabs: 0 = Kontierung, 1 = Rechnungseditor, 2 = Zahlungsbedingungen / Steuerbeträge -->
+
+			<FieldList key="disabledPages"> <!-- Tabcontrol(s), welche angezeigt werden, aber für Benutzereingaben gesperrt sind. -->
+			</FieldList>
+
+			<FieldList key="hiddenPages"> <!-- Tabcontrol(s), welche vor dem Anwender versteckt werden. -->
+			</FieldList>
+
+			<FieldList key="disabledFields"> <!-- Felder, welche angezeigt werden, aber für Benutzereingaben gesperrt sind. -->
+				<Value>Sendung</Value> <!-- Klarname des Feldes auf der entsprechenden Maske des WF -->
+				<Value>Posteingangsdatum</Value>
+				<Value>Verlauf</Value>
+				<Value>Team</Value>
+			</FieldList>
+
+			<FieldList key="hiddenFields"> <!-- Felder, welche vor dem Anwender versteckt werden. -->
+				<Value>Team</Value>
+				<Value>T</Value>
+				<Value>für alle Dokumente</Value>
+				<Value>setze Verbleib auf</Value>
+			</FieldList>
+
+			<FieldList key="disbledTableColumns"> <!-- Spalten in Tabellen, welche für die Bearbeitung gesperrt werden sollen. -->
+				<Tabelle wf_variable="WF_List_Docs">
+					<Value>Dokument-Barcode</Value>
+					<Value>Seitenzahl</Value>
+					<Value>Verbleib</Value>
+					<Value>ObjektID</Value>
+				</Tabelle>
+			</FieldList>
+
+			<ObligationFields>
+				<ObligationField meldungstext="Sendung_Loeschen" wf_variable="WF_Aktion" />
+				<ObligationField meldungstext="Bitte_Setzen_auf_angeben" wf_variable="WF_Setzen_auf"/>
+				<ObligationField meldungstext="Antragsnummer_ungueltig" wf_variable="WF_Antragsnummer"/>
+				<ObligationField meldungstext="Geschaeftspartnernummer_ungueltig" wf_variable="WF_Geschaeftspartner_Nr"/>
+				<ObligationField meldungstext="Bitte_Team_Waehlen" wf_variable="WF_Team"/>
+
+				<ObligationField meldungstext="Nichts_gewaehlt" wf_variable="WF_Antragsnummer"> <!-- WF_Weiterleiten_an -->
+					<Condition wf_variable="WF_Geschaeftspartner_Nr" operator="=" value="" varValue="Leerer_Wert" />
+					<Condition wf_variable="WF_Antragsnummer" operator="=" value="" varValue="Leerer_Wert" />
+				</ObligationField>
+				
+			</ObligationFields>
+
+			<Routing verknuepft_mit="WF_Aktion">
+				<Route action="Aktion_Weiterleiten_Sendungspruefung" stepid="20" />
+				<Route action="Aktion_Sendung_verwerfen" stepid="1111" />
+				<Route action="Aktion_Weiterleiten_Rechnungseingang" stepid="1000" />
+			</Routing>
+
+			<Listen> <!-- In der Rubrik "Listen" werden alle Felder auf der WF-Maske direkt oder in Tabellen auf der WF-Maske aufgeführt, die eine Liste beinhalten.
+				Dazu gehören die "ListFields_static", "ListFields_dynamic" sowie "Tablelist_Fields"
+				Die jedem WF-Maskenfeld zugeordnete WF-Variable wird hier per Attribut "wf_variable" bestimmt und jeweils durch beliebig viele ListItems als Liste aufgefüllt. -->
+
+				<ListFields_static> <!-- Aufführen aller Listenvariablen mit ihren entsprechenden Listenwerten. -->
+					<ListField wf_variable="WF_Aktion"> <!-- Das Attribut "wf_variable" bezeichnet die WF-Variable, für welche die zugeordneten Listeneinträge zu generieren sind. -->
+						<ListItem item="Aktion_Weiterleiten_Sendungspruefung" default="true" />
+						<ListItem item="Aktion_Sendung_verwerfen" />
+						<ListItem item="Aktion_Weiterleiten_Rechnungseingang" />
+					</ListField>
+
+					<ListField wf_variable="WF_Setzen_auf">
+						<ListItem item="Setzen_auf_1" />
+						<ListItem item="Setzen_auf_2" />
+						<ListItem item="Setzen_auf_3" />
+						<ListItem item="Setzen_auf_4" />
+					</ListField>
+
+				</ListFields_static>
+
+				<ListFields_dynamic> <!-- Aufführen aller Listenvariablen mit ihren entsprechenden Verweisnamen (Organisationsobjekte) auf Listenwerte -->
+					<ListField wf_variable="WF_Antragsnummer"/>
+					<ListField wf_variable="WF_Geschaeftspartner_Nr"/>				
+				</ListFields_dynamic>
+
+				<Tablelist_Fields> <!-- In der Rubrik "Tablelist_Fields" werden alle Tabellen auf der Maske aufgeführt, welche in hier zu definierenden Spalten Listenfelder besitzen. -->
+					<Table wf_variable="WF_List_Docs">
+						<Field column_name="Dokument Status" corresponding_wf_name="STATUS" obligationfield="true" typ="Liste" source="Dokstatus_1;Dokstatus_2;Dokstatus_3;Dokstatus_4"/> 
+					</Table>
+				</Tablelist_Fields>
+			</Listen>
+
+		</Step>
+
+		<Step name="Sendungsprüfung" id="20">
+			<Object key="step_beschreibung">Sendung prüfen und freigeben</Object>
+			<Object key="protokoll_in">Eingang</Object>
+			<Object key="status_in">Zur Prüfung</Object>
+			<Object key="activity">Sendungsprüfung</Object>
+			<Object key="bearbeiter_art">fieldobject</Object>
+			<Object key="bearbeiter_art_Wert">WF_Weiterleiten_an</Object>
+			<Object key="maxdauer_days">30</Object>
+            <Object key="activepage">0</Object>
+
+			<FieldList key="disabledPages">
+			</FieldList>
+
+			<FieldList key="hiddenPages">
+			</FieldList>
+
+			<FieldList key="disabledFields">
+				<Value>Sendung</Value>
+				<Value>Posteingangsdatum</Value>
+				<Value>Verlauf</Value>
+				<Value>Team</Value>
+			</FieldList>
+
+			<FieldList key="hiddenFields">
+			</FieldList>
+
+			<FieldList key="disbledTableColumns">
+				<Tabelle wf_variable="WF_List_Docs">
+					<Value>Dokument-Barcode</Value>
+					<Value>Seitenzahl</Value>
+					<Value>ObjektID</Value>
+				</Tabelle>
+			</FieldList>
+
+			<ObligationFields>
+				<ObligationField meldungstext="Keine_Aktion_angegeben" wf_variable="WF_Aktion"/>
+				<ObligationField meldungstext="Bitte_Setzen_auf_angeben" wf_variable="WF_Setzen_auf"/>
+
+				<ObligationField meldungstext="Nichts_gewaehlt" wf_variable="WF_Antragsnummer"> <!-- WF_Weiterleiten_an -->
+					<Condition wf_variable="WF_Geschaeftspartner_Nr" operator="=" value="" varValue="Leerer_Wert" />
+					<Condition wf_variable="WF_Antragsnummer" operator="=" value="" varValue="Leerer_Wert" />
+				</ObligationField>
+
+				<ObligationField meldungstext="Antragsnummer_ungueltig" wf_variable="WF_Antragsnummer"/>
+				<ObligationField meldungstext="Geschaeftspartnernummer_ungueltig" wf_variable="WF_Geschaeftspartner_Nr"/>
+				
+			</ObligationFields>
+
+			<Listen>
+				<ListFields_static>
+					<ListField wf_variable="WF_Aktion">
+						<ListItem item="Aktion_Weiterleiten_Team" default="true" />
+						<ListItem item="Aktion_Zurueck_Scanplatz" />
+					</ListField>
+
+					<ListField wf_variable="WF_Setzen_auf">
+						<ListItem item="Setzen_auf_1" />
+						<ListItem item="Setzen_auf_2" />
+						<ListItem item="Setzen_auf_3" />
+						<ListItem item="Setzen_auf_4" />
+					</ListField>
+					
+					<ListField wf_variable="WF_Antragsnummer"/>
+					<ListField wf_variable="WF_Geschaeftspartner_Nr"/>					
+				</ListFields_static>
+
+				<ListFields_dynamic>
+				</ListFields_dynamic>
+
+				<Tablelist_Fields>
+					<Table wf_variable="WF_Kontierung" referenzspalte_fuer_baustellennummer="KOSTENSTELLE" referenzspalte_fuer_benutzername="">
+						<Field column_name="Sachl. richtig" corresponding_wf_name="SACHLICH_RICHTIG" obligationfield="false" typ="Liste" source="Sachlich_1"/>
+
+						<Field column_name="Kostenstelle" corresponding_wf_name="KOSTENSTELLE" obligationfield="false" typ="SQL" value_index="0" separator="|" source="Select Distinct (IsNull(feld1, '') + '|' + IsNull(feld2, '') + '|' + IsNull(feld3, '')) as Wert From [enaio].[enaio].[object47] WHERE feld9 = '^|RE_RECIPIENT_NO|^' and isnull(deleted, 0) = 0"/>
+						<Field column_name="Sachkonto" corresponding_wf_name="SACHKONTO" obligationfield="false" typ="SQL" value_index="0" separator="|" source="Select (IsNull(feld2, '') + '|' + IsNull(feld3, ''))  as Wert  From [enaio].[enaio].[object49] where isnull(deleted, 0) = 0"/>
+
+						<Field column_name="UStKz" corresponding_wf_name="UST_KZ" obligationfield="false" typ="SQL" value_index="0" separator="|" source="Select (IsNull(feld5, '') + '|' + IsNull(feld1, '')) as Wert From [enaio].[enaio].[object50] where isnull(deleted, 0) = 0 ORDER BY TRY_CONVERT(int, feld5) ASC"/>
+						<Field column_name="Kostenträger" corresponding_wf_name="KOSTENTRAEGER" obligationfield="false" typ="SQL" value_index="0" separator="|" source="Select (IsNull(feld2, '') + '|' + IsNull(feld3, '') + '|' + IsNull(feld4, '')) as Wert From [enaio].[enaio].[object48] WHERE feld1 = '^|RE_RECIPIENT_NO|^' and isnull(deleted, 0) = 0 ORDER BY TRY_CONVERT(int, feld2) ASC"/>
+					</Table>
+					
+					<Table wf_variable="WF_List_Docs">
+						<Field column_name="Dokument Status" corresponding_wf_name="STATUS" obligationfield="true" typ="Liste" source="Dokstatus_1;Dokstatus_2;Dokstatus_3;Dokstatus_4"/> 
+					</Table>
+
+				</Tablelist_Fields>
+
+			</Listen>
+
+			<Routing verknuepft_mit="WF_Aktion">
+				<Route action="Aktion_Weiterleiten_Team" stepid="20" />
+				<Route action="Aktion_Zurueck_Scanplatz" stepid="10" />
+			</Routing>
+		</Step>
+
+
+	</Steps>
+
+
+
+</workflow>
